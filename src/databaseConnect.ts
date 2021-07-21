@@ -10,14 +10,13 @@ dotenv.config();
     try {
       await createConnection({
         type: 'postgres',
-        host: process.env.HOST,
-        port: 5432, 
-        username: process.env.USERNAME,
-        password: process.env.PASSWORD,
-        database: process.env.DATABASE,
+        url: process.env.DATABASE_URL,
         entities: [CommentModel, FilmModel],
         synchronize: true,
-      });
+            ssl: {
+            rejectUnauthorized: false
+        }
+        })
       console.log('Connected to Postgres'); 
     } catch (error) {
       console.error(error);

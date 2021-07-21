@@ -12,13 +12,12 @@ const ORMConfig = async () => {
     try {
         await typeorm_1.createConnection({
             type: 'postgres',
-            host: process.env.HOST,
-            port: 5432,
-            username: process.env.USERNAME,
-            password: process.env.PASSWORD,
-            database: process.env.DATABASE,
+            url: process.env.DATABASE_URL,
             entities: [CommentModel_1.CommentModel, FilmModel_1.FilmModel],
             synchronize: true,
+            ssl: {
+                rejectUnauthorized: false
+            }
         });
         console.log('Connected to Postgres');
     }
