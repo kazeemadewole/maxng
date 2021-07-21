@@ -25,7 +25,7 @@ const createComment = async (req:Request, res:Response) => {
 
 }
 
-const getCommentById = async  (req:Request, res:Response) => {
+const getCommentById = async  (req:Request, res:Response): Promise<any> => {
     const id = req.params.id;
     try {
         const {id} = req.params;
@@ -49,7 +49,7 @@ const getCommentById = async  (req:Request, res:Response) => {
       }
 }
 
-const getAllComment = async (req:Request, res:Response)=> {
+const getAllComment = async (req:Request, res:Response) : Promise<any> => {
     try {
         const comments = await createQueryBuilder("comment")
           .select("comments.id")

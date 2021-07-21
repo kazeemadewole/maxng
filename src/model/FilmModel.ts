@@ -7,8 +7,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from "typeorm";
-import { CommentModel } from "./CommentModel";
-// import { Comment } from './comment';
+
 @Entity("movie")
 export class FilmModel extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -39,6 +38,5 @@ export class FilmModel extends BaseEntity {
   edited: string;
   @Column()
   url: string;
-  @OneToMany(() => CommentModel, (comment) => comment.movie)
-  comments: CommentModel[];
+ 
 }
