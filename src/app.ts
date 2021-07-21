@@ -3,13 +3,14 @@ import express, {Request, Response, NextFunction} from 'express';
 import  path from "path";
 import  cookieParser from "cookie-parser";
 import  logger from "morgan";
-import {connectionToDb} from './databaseConnect';
+import ORMConfig from './databaseConnect';
 
-var indexRouter = require("./routes/index");
-var characterRouter = require("./routes/character");
+import indexRouter from "./routes/index";
+import characterRouter from "./routes/character";
+import commentRouter from "./routes/comment";
 
 const app = express();
-connectionToDb();
+ORMConfig();
 
  
 // view engine setup
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+app.use("/comment", commentRouter);
 app.use("/character", characterRouter);
 
 // catch 404 and forward to error handler

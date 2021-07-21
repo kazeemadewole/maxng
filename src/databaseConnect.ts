@@ -5,10 +5,11 @@ import { FilmModel } from './model/FilmModel';
 
 dotenv.config();
 
- export const connectionToDb = async () => {
+ const ORMConfig = async () => {
+   console.log('here is db');
     try {
       await createConnection({
-        type: process.env.TYPE as "postgres",
+        type: 'postgres',
         host: process.env.HOST,
         port: 5432, 
         username: process.env.USERNAME,
@@ -17,11 +18,9 @@ dotenv.config();
         entities: [CommentModel, FilmModel],
         synchronize: true,
       });
-      console.log('Connected to Postgres');
-  
-      
+      console.log('Connected to Postgres'); 
     } catch (error) {
       console.error(error);
-      throw new Error('Unable to connect to Postgres');
     }
   };
+  export = ORMConfig

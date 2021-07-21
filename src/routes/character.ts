@@ -5,4 +5,4 @@ const router = express.Router();
 /* GET home page. */
 router.get('/:id',MovieCharacters);
 
-export default router;
+export default router

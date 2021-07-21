@@ -1,9 +1,9 @@
-import  express from 'express';
+import  express, {Request, Response} from 'express';
 import { getAll, getOne } from '../controller/Films';
-var router = express.Router();
+const router = express.Router();
 
 /* GET home page. */
-router.get('/',getAll);
+router.get('/', getAll);
 router.get('/:id', getOne);
 
 export default router;

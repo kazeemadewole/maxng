@@ -2,7 +2,8 @@ import {Request, Response} from 'express';
 import {CommentModel} from '../model/CommentModel';
 import { createQueryBuilder } from "typeorm";
 
-const createComment = async (req:Request, res:Response) => {
+export const createComment = async (req:Request, res:Response) => {
+  console.log('comment')
     const {comment} =  req.body;
     const episode_id = parseInt(req.params.id);
     try{
@@ -11,10 +12,10 @@ const createComment = async (req:Request, res:Response) => {
         episode_id,
         comment
     })
-    await comment.save();
+    await AddComment.save();
     return res.status(201).json({
         status: 'successfull',
-        msg: "comment added",
+        data: AddComment,
       });
     } catch (error) {
       return res.status(404).json({
@@ -25,18 +26,17 @@ const createComment = async (req:Request, res:Response) => {
 
 }
 
-const getCommentById = async  (req:Request, res:Response): Promise<any> => {
+export const getCommentById = async  (req:Request, res:Response): Promise<any> => {
     const id = req.params.id;
     try {
-        const {id} = req.params;
         const comments = await createQueryBuilder("comment")
           .select("comments.id")
-          .addSelect("comments.comments")
+          .addSelect("comments.comment")
           .addSelect("comments.created_at")
           .addSelect("comments.episode_id")
-          .from(Comment, "comments")
-          .where("comments.id = :id", { id: parseInt(id) })
-          .getOne();
+          .from(CommentModel, "comments")
+          .where("comments.episode_id = :id", { id: parseInt(id) })
+          .getMany();
         return res.status(201).json({
             status: 'successful',
             comments 
@@ -49,14 +49,14 @@ const getCommentById = async  (req:Request, res:Response): Promise<any> => {
       }
 }
 
-const getAllComment = async (req:Request, res:Response) : Promise<any> => {
+export  const getAllComment = async (req:Request, res:Response) : Promise<any> => {
     try {
         const comments = await createQueryBuilder("comment")
           .select("comments.id")
           .addSelect("comments.comments")
           .addSelect("comments.created_at")
           .addSelect("comments.episode_id")
-          .from(Comment, "comments")
+          .from(CommentModel, "comments")
           .getMany();
           return res.status(201).json({
             status: 'successful',
@@ -70,12 +70,16 @@ const getAllComment = async (req:Request, res:Response) : Promise<any> => {
       }
 }
 
-const editComment = (req:Request, res:Response) => {
+export  const editComment = (req:Request, res:Response) => {
     //to edit a comment
+    console.log('edited comment');
+    return res.status(200).json({
+      message : 'message'
+    })
 
 }
 
-const deleteComment = (req:Request, res:Response) => {
+export const deleteComment = (req:Request, res:Response) => {
     //to delete a comment
 
 }
