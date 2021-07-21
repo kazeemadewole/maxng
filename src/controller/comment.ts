@@ -60,7 +60,7 @@ export  const getAllComment = async (req:Request, res:Response) : Promise<any> =
     try {
         const comments = await createQueryBuilder("comment")
           .select("comments.id")
-          .addSelect("comments.comments")
+          .addSelect("comments.comment")
           .addSelect("comments.created_at")
           .addSelect("comments.episode_id")
           .from(CommentModel, "comments")

@@ -61,7 +61,7 @@ const getAllComment = async (req, res) => {
     try {
         const comments = await typeorm_1.createQueryBuilder("comment")
             .select("comments.id")
-            .addSelect("comments.comments")
+            .addSelect("comments.comment")
             .addSelect("comments.created_at")
             .addSelect("comments.episode_id")
             .from(CommentModel_1.CommentModel, "comments")
