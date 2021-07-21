@@ -1,4 +1,3 @@
-import { FilmModel } from './FilmModel';
 import {
   CreateDateColumn,
   UpdateDateColumn,
@@ -15,13 +14,10 @@ export class CommentModel extends BaseEntity {
   id: number;
   @Column({ type: 'varchar', length: 500 })
   comment: string;
+  @Column({ type: 'int' })
+  episode_id: number;
   @CreateDateColumn()
   created_at: Date;
   @UpdateDateColumn()
   updated_at: Date;
-  @ManyToOne(() => FilmModel, (movie) => movie.comments)
-  @JoinColumn({
-    name: 'movie_id',
-  })
-  movie: FilmModel;
 }
