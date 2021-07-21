@@ -3,8 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteComment = exports.editComment = exports.getAllComment = exports.getCommentById = exports.createComment = void 0;
 const CommentModel_1 = require("../model/CommentModel");
 const typeorm_1 = require("typeorm");
+const CommentValidation_1 = require("../JoiValidation/CommentValidation");
 const createComment = async (req, res) => {
-    console.log('comment');
+    const { error } = CommentValidation_1.commentValidation(req.body);
+    if (error) {
+        return res.status(404).json({
+            status: 'failed',
+            error: error.details[0].message
+        });
+    }
     const { comment } = req.body;
     const episode_id = parseInt(req.params.id);
     try {

@@ -11,16 +11,14 @@ const getAll = async (req, res) => {
     let result = [];
     let output = [];
     try {
-        console.log('here');
         const data = await axios_1.default.get(`https://swapi.dev/api/films`);
-        console.log(data);
         for (let i = 0; i < data.data.results.length; i++) {
-            let data = {};
+            let mydata = {};
             let each = data.data.results[i];
-            data.title = each.title;
-            data.episode_id = each.episode_id;
-            data.opening_crawl = each.opening_crawl;
-            data.release_date = each.release_date;
+            mydata.title = each.title;
+            mydata.episode_id = each.episode_id;
+            mydata.opening_crawl = each.opening_crawl;
+            mydata.release_date = each.release_date;
             const id = each.episode_id;
             const comments = await typeorm_1.createQueryBuilder("comment")
                 .select("comments.id")
@@ -29,11 +27,11 @@ const getAll = async (req, res) => {
                 .addSelect("comments.episode_id")
                 .from(CommentModel_1.CommentModel, "comments")
                 .where("comments.episode_id = :id", { id: parseInt(id) })
-                .getOne();
-            data.comment = comments;
-            output.push(data);
+                .getMany();
+            let commentCount = comments ? comments.length : 0;
+            mydata.commentCount = commentCount;
+            output.push(mydata);
         }
-        console.log('output', output);
         const sortedResult = output.sort((a, b) => b.release_date - a.release_date);
         return res.status(200).json({
             result: sortedResult,
@@ -41,7 +39,7 @@ const getAll = async (req, res) => {
     }
     catch (error) {
         return res.status(404).json({
-            status: "failed",
+            status: "failing",
             error: error.message,
         });
     }

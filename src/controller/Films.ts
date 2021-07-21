@@ -7,17 +7,17 @@ export const getAll = async (req:Request, res:Response) => {
   let result:Record<string,any> = [];
   let output: Record<string,any> = [];
   try {
-    console.log('here');
     const data = await axios.get(`https://swapi.dev/api/films`);
-    console.log(data)
 
     for(let i = 0; i < data.data.results.length; i++){
-      let data: Record<string,any> = {};
+      let mydata: Record<string,any> = {};
       let each = data.data.results[i];
-      data.title = each.title;
-      data.episode_id = each.episode_id;
-      data.opening_crawl = each.opening_crawl;
-      data.release_date = each.release_date;
+      
+      mydata.title= each.title;
+      
+      mydata.episode_id = each.episode_id;
+      mydata.opening_crawl = each.opening_crawl;
+      mydata.release_date = each.release_date;
 
       const id = each.episode_id;
       const comments = await createQueryBuilder("comment")
@@ -27,14 +27,13 @@ export const getAll = async (req:Request, res:Response) => {
       .addSelect("comments.episode_id")
       .from(CommentModel, "comments")
       .where("comments.episode_id = :id", { id: parseInt(id) })
-      .getOne();
+      .getMany();
+      let commentCount = comments? comments.length : 0
 
-      data.comment = comments;
-      output.push(data);
+      mydata.commentCount = commentCount;
+      output.push(mydata);
       
     }
-
-    console.log('output',output);
    
     const sortedResult = output.sort((a:Record<string,any>, b:Record<string,any>) => b.release_date - a.release_date);
     return res.status(200).json({
@@ -42,7 +41,7 @@ export const getAll = async (req:Request, res:Response) => {
     });
   } catch (error) {
     return res.status(404).json({
-      status: "failed",
+      status: "failing",
       error: error.message,
     });
   }

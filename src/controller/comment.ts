@@ -1,9 +1,16 @@
 import {Request, Response} from 'express';
 import {CommentModel} from '../model/CommentModel';
 import { createQueryBuilder } from "typeorm";
+import {commentValidation} from '../JoiValidation/CommentValidation';
 
 export const createComment = async (req:Request, res:Response) => {
-  console.log('comment')
+  const {error} = commentValidation(req.body);
+  if(error){
+    return res.status(404).json({
+      status:'failed',
+      error: error.details[0].message
+    })
+  }
     const {comment} =  req.body;
     const episode_id = parseInt(req.params.id);
     try{
